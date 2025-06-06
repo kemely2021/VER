@@ -1,0 +1,28 @@
+﻿Archivo,Campo,Tipo de Dato,Presencia,Descripción
+agency.txt,agency_id,Texto,Condicionalmente Obligatorio,Identificador único de la agencia de transporte.
+agency.txt,agency_name,Texto,Obligatorio,Nombre de la agencia de transporte.
+agency.txt,agency_url,URL,Obligatorio,Página web oficial de la agencia.
+agency.txt,agency_timezone,Texto,Obligatorio,Zona horaria donde opera la agencia.
+agency.txt,agency_lang,Texto,Opcional,Idioma principal de la agencia.
+stops.txt,stop_id,Texto,Obligatorio,Identificador único de la parada.
+stops.txt,stop_name,Texto,Obligatorio,Nombre de la parada o estación.
+stops.txt,stop_lat,Número,Obligatorio,Latitud de la parada.
+stops.txt,stop_lon,Número,Obligatorio,Longitud de la parada.
+routes.txt,route_id,Texto,Obligatorio,Identificador único de la ruta.
+routes.txt,route_short_name,Texto,Obligatorio,Nombre corto de la ruta (ej. número).
+routes.txt,route_long_name,Texto,Obligatorio,Nombre completo de la ruta.
+routes.txt,route_type,Número,Obligatorio,"Tipo de transporte (bus, tren, etc.)."
+trips.txt,trip_id,Texto,Obligatorio,Identificador del viaje.
+trips.txt,route_id,Texto,Obligatorio,Ruta a la que pertenece el viaje.
+trips.txt,service_id,Texto,Obligatorio,Identificador del servicio (días de operación).
+trips.txt,direction_id,Número,Opcional,Dirección del viaje (0 o 1).
+stop_times.txt,trip_id,Texto,Obligatorio,Viaje al que pertenece esta parada.
+stop_times.txt,arrival_time,Hora,Obligatorio,Hora de llegada a la parada.
+stop_times.txt,departure_time,Hora,Obligatorio,Hora de salida de la parada.
+stop_times.txt,stop_id,Texto,Obligatorio,Parada específica del viaje.
+stop_times.txt,stop_sequence,Número,Obligatorio,Orden de la parada en el viaje.
+directions.txt,route_id,Texto,Obligatorio,Ruta asociada a la dirección.
+directions.txt,direction_id,Número,Obligatorio,Identificador de la dirección (0 o 1).
+directions.txt,direction,Texto,Obligatorio,Descripción como 'ida' o 'vuelta'.
+timepoints.txt,trip_id,Texto,Obligatorio,Viaje al que pertenece el punto de control.
+timepoints.txt,stop_id,Texto,Obligatorio,Parada que actúa como punto de control.

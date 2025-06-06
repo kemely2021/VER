@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Información de Archivos GTFS</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1000px;
+      margin: 30px auto;
+      background: #f9f9f9;
+      padding: 0 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    nav {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    nav a {
+      margin: 0 10px;
+      text-decoration: none;
+      color: #007bff;
+    }
+    #archivo-info {
+      margin-top: 30px;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin: 20px 0 5px;
+    }
+    select {
+      padding: 8px;
+      font-size: 16px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f0f0f0;
+    }
+    .descripcion {
+      margin-top: 10px;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <h1>Información de Archivos GTFS</h1>
+
+  <nav>
+    <a href="/">Inicio</a>
+    <a href="/packing">Visualización</a>
+    <a href="/info">Información</a>
+  </nav>
+
+  <label for="archivo-select">Selecciona un archivo:</label>
+  <select id="archivo-select">
+    <option value="">-- Elige un archivo --</option>
+  </select>
+
+  <div id="archivo-info">
+    <div id="archivo-descripcion" class="descripcion"></div>
+    <table id="campos-table" style="display:none">
+      <thead>
+        <tr>
+          <th>Campo</th>
+          <th>Tipo</th>
+          <th>Obligatoriedad</th>
+          <th>Descripción</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script>
+    const archivos = [];
+    const campos = [];
+
+    async function cargarDatos() {
+      const a = await fetch("/static/gtfs_archivos.csv").then(r => r.text());
+      const c = await fetch("/static/gtfs_campos.csv").then(r => r.text());
+
+      const aRows = a.trim().split("\n").slice(1);
+      for (const row of aRows) {
+        const [archivo, estado, descripcion] = row.split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/);
+        archivos.push({ archivo: archivo.trim(), estado: estado.trim(), descripcion: descripcion.trim() });
+      }
+
+      const cRows = c.trim().split("\n").slice(1);
+      for (const row of cRows) {
+        const [archivo, campo, tipo, descripcion, oblig] = row.split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/);
+        campos.push({ archivo: archivo.replace("¶", "").trim(), campo: campo.trim(), tipo: tipo.trim(), descripcion: oblig.trim(), oblig: descripcion.trim() });
+      }
+
+      const select = document.getElementById("archivo-select");
+      for (const file of archivos) {
+        const opt = document.createElement("option");
+        opt.value = file.archivo;
+        opt.textContent = file.archivo;
+        select.appendChild(opt);
+      }
+
+      // Autoselección por parámetro
+      const params = new URLSearchParams(window.location.search);
+      const archivoParam = params.get("archivo");
+      if (archivoParam) {
+        document.getElementById("archivo-select").style.display = "none";
+
+        const trySelect = () => {
+          const select = document.getElementById("archivo-select");
+          if (select.querySelector(`option[value='${archivoParam}']`)) {
+            select.value = archivoParam;
+            select.dispatchEvent(new Event("change"));
+          } else {
+            setTimeout(trySelect, 100);
+          }
+        };
+        trySelect();
+      }
+    }
+
+    document.getElementById("archivo-select").addEventListener("change", (e) => {
+      const value = e.target.value;
+      const info = archivos.find(a => a.archivo === value);
+      const camposArchivo = campos.filter(c => c.archivo === value).slice(0, 10); // solo los primeros 10
+
+      const descripcion = document.getElementById("archivo-descripcion");
+      const tabla = document.getElementById("campos-table");
+      const tbody = tabla.querySelector("tbody");
+
+      if (!value || !info) {
+        descripcion.innerHTML = "";
+        tabla.style.display = "none";
+        return;
+      }
+
+      descripcion.innerHTML = `<strong>${info.estado}</strong>: ${info.descripcion}`;
+      tbody.innerHTML = "";
+      for (const campo of camposArchivo) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${campo.campo}</td><td>${campo.tipo}</td><td>${campo.descripcion}</td><td>${campo.oblig}</td>`;
+        tbody.appendChild(tr);
+      }
+      tabla.style.display = "table";
+    });
+
+    cargarDatos();
+  </script>
+</body>
+</html>

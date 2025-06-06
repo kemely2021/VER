@@ -1,0 +1,27 @@
+﻿Archivo,Presencia,Descripción
+agency.txt,Obligatorio,"Información sobre la agencia de transporte, como nombre y zona horaria."
+stops.txt,Obligatorio,"Detalles de las paradas, incluyendo ubicación y nombre."
+routes.txt,Obligatorio,"Información sobre las rutas disponibles, como nombres y tipos."
+trips.txt,Obligatorio,Detalles de los viajes individuales dentro de las rutas.
+stop_times.txt,Obligatorio,Horarios de llegada y salida en cada parada para los viajes.
+calendar.txt,Condicionalmente Obligatorio,Define los días de operación de los servicios.
+calendar_dates.txt,Condicionalmente Obligatorio,"Excepciones a los calendarios regulares, como días festivos."
+fare_attributes.txt,Opcional,"Información sobre tarifas, como precios y métodos de pago."
+fare_rules.txt,Opcional,Reglas que vinculan tarifas a rutas específicas.
+shapes.txt,Condicionalmente Obligatorio,Coordenadas para representar rutas en un mapa.
+frequencies.txt,Opcional,Define servicios que operan a intervalos regulares.
+transfers.txt,Opcional,Reglas sobre transbordos entre rutas o paradas.
+pathways.txt,Opcional,Información sobre caminos peatonales dentro de estaciones.
+levels.txt,Opcional,"Niveles dentro de estaciones, como pisos o plataformas."
+feed_info.txt,Recomendado,"Metadatos sobre el conjunto de datos, como fecha de publicación."
+translations.txt,Opcional,Traducciones de texto para soportar múltiples idiomas.
+attributions.txt,Opcional,Créditos y atribuciones para los datos proporcionados.
+fare_products.txt,Opcional,Detalles sobre productos tarifarios disponibles.
+fare_leg_rules.txt,Opcional,Reglas detalladas para calcular tarifas en tramos específicos.
+fare_transfer_rules.txt,Opcional,Reglas sobre transferencias de tarifas entre servicios.
+areas.txt,Opcional,Define áreas geográficas específicas dentro del sistema de transporte.
+stop_areas.txt,Opcional,Agrupaciones de paradas que forman áreas funcionales.
+networks.txt,Opcional,"Información sobre redes de transporte, como operadores o sistemas."
+route_networks.txt,Opcional,Relación entre rutas y las redes a las que pertenecen.
+directions.txt,Opcional,Asocia un direction_id con una descripción como 'ida' o 'vuelta'.
+timepoints.txt,Opcional,Marca las paradas que actúan como puntos de control de horario.

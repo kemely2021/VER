@@ -1,0 +1,103 @@
+<! -- index.html-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="static/styles.css">
+  <script src="static/script.js"></script>
+
+  <title>Subir GTFS ZIP</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 30px auto;
+      text-align: center;
+      background: #f9f9f9;
+    }
+    label[for="fileInput"] {
+      background: #007bff;
+      color: white;
+      padding: 10px 25px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-bottom: 5px;
+      display: inline-block;
+    }
+    input[type="file"] {
+      display: none;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 15px 0;
+      cursor: pointer;
+      border-radius: 6px;
+      border: none;
+      background-color: #28a745;
+      color: white;
+    }
+    #status {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Subir archivo GTFS (ZIP)</h1>
+  <form id="uploadForm">
+    <label for="fileInput">Seleccionar archivo ZIP</label>
+    <input type="file" id="fileInput" accept=".zip" required />
+    <div id="selectedFileName"></div>
+    <button type="submit" disabled>Analizar y visualizar</button>
+  </form>
+  <div id="status"></div>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const button = document.querySelector('button[type="submit"]');
+    const status = document.getElementById('status');
+    const selectedFileName = document.getElementById('selectedFileName');
+
+    fileInput.addEventListener('change', () => {
+      button.disabled = !fileInput.files.length;
+      status.textContent = '';
+      selectedFileName.textContent = fileInput.files.length ? `Archivo: ${fileInput.files[0].name}` : '';
+    });
+
+    document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!fileInput.files.length) return;
+
+      button.disabled = true;
+      status.textContent = 'Procesando...';
+
+      const formData = new FormData();
+      formData.append('file', fileInput.files[0]);
+
+      try {
+        const response = await fetch('/upload', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!response.ok) {
+          const error = await response.json();
+          status.textContent = 'Error: ' + (error.error || response.statusText);
+          button.disabled = false;
+          return;
+        }
+
+        const data = await response.json();
+        localStorage.setItem("gtfs_data", JSON.stringify(data));
+        window.location.href = "/packing";
+
+      } catch (err) {
+        status.textContent = 'Error en la conexión o servidor.';
+        button.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

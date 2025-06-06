@@ -1,0 +1,58 @@
+<!--packing: html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Visualización Circular GTFS</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 900px;
+      margin: 20px auto;
+      background: #f9f9f9;
+      text-align: center;
+    }
+    .tooltip {
+      position: absolute;
+      text-align: left;
+      padding: 8px;
+      font-size: 13px;
+      background: white;
+      border: 1px solid #999;
+      border-radius: 5px;
+      pointer-events: none;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      max-width: 250px;
+      line-height: 1.3em;
+    }
+    .back-link {
+      margin-top: 20px;
+      display: block;
+      font-size: 16px;
+      color: #007bff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Visualización Circular de Archivos GTFS</h1>
+  <a href="/" class="back-link">⬅ Volver a la página principal</a>
+  <div id="chart"></div>
+  <div class="tooltip" id="tooltip"></div>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="/static/script.js"></script>
+  <script>
+    const raw = localStorage.getItem("gtfs_data");
+    if (raw) {
+      const data = JSON.parse(raw);
+      drawCircles(data);
+    } else {
+      document.getElementById("chart").innerHTML = '<p>No hay datos cargados. Vuelve a <a href="/">la página principal</a>.</p>';
+    }
+  </script>
+</body>
+</html>
