@@ -1,10 +1,3 @@
-const API = 'https://gtfs-backend.onrender.com';
-
-// subir ZIP
-fetch(`${API}/upload`, { method:'POST', body:formData })
-
-// vista previa
-fetch(`${API}/preview/${fileName}`)
 
 
 function drawCircles(data) {
